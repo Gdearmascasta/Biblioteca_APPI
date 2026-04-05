@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Biblioteca Digital </title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <div class="app-container">
+      <header>
+        <h1>📚 Biblioteca Digital</h1>
+        <p>Sistema  de Gestión de Libros y Préstamos</p>
+      </header>
+
+      <main class="dashboard">
+
+        <!-- Panel Libros -->
+        <section class="card glassmorphism">
+          <h2>Gestión de Libros</h2>
+          
+          <form id="form-libro" class="form-grid">
+            <input type="number" id="lib-cod" placeholder="Código" required>
+            <input type="text" id="lib-tit" placeholder="Título del Libro" required>
+            <input type="text" id="lib-edi" placeholder="Editorial" required>
+            <input type="text" id="lib-aut" placeholder="Autor principal" required>
+            <button type="submit" class="btn-primary">Registrar Libro</button>
+          </form>
+
+          <div class="search-bar">
+            <input type="number" id="buscar-lib-cod" placeholder="Buscar por Código (BST)">
+            <button id="btn-buscar-lib" class="btn-secondary">Buscar</button>
+          </div>
+
+          <div class="table-container">
+            <table id="tabla-libros">
+              <thead>
+                <tr>
+                  <th>Código</th>
+                  <th>Título</th>
+                  <th>Editorial</th>
+                  <th>Autor(es)</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+            <div style="text-align: center; margin-top: 1rem;">
+              <button id="btn-ver-mas-libros" class="btn-secondary" style="display: none;">Ver más libros</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Panel Usuarios -->
+        <section class="card glassmorphism">
+          <h2>Gestión de Usuarios</h2>
+          <form id="form-usuario" class="form-grid">
+            <input type="number" id="usu-cod" placeholder="Documento / ID" required>
+            <input type="text" id="usu-nom" placeholder="Nombre completo" required>
+            <input type="text" id="usu-dir" placeholder="Dirección" required>
+            <input type="text" id="usu-tel" placeholder="Teléfono" required>
+            <button type="submit" class="btn-primary">Registrar Usuario</button>
+          </form>
+
+          <div class="table-container">
+            <table id="tabla-usuarios">
+              <thead>
+                <tr>
+                  <th>Cod / ID</th>
+                  <th>Nombre</th>
+                  <th>Dirección</th>
+                  <th>Teléfono</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Panel Préstamos -->
+        <section class="card glassmorphism full-width">
+          <h2>Historial de Préstamos</h2>
+          <form id="form-prestamo" class="form-inline">
+            <input type="number" id="pres-usu" placeholder="ID Usuario" required>
+            <input type="text" id="pres-libs" placeholder="Cod. Libros (ej: 101,102)" required>
+            <input type="date" id="pres-fecha" required>
+            <button type="submit" class="btn-primary">Realizar Préstamo</button>
+          </form>
+
+          <div class="table-container">
+            <table id="tabla-prestamos">
+              <thead>
+                <tr>
+                  <th># Préstamo</th>
+                  <th>Usuario</th>
+                  <th>Fecha Préstamo</th>
+                  <th>Propuesta</th>
+                  <th>Entrega Real</th>
+                  <th>Estado</th>
+                  <th>Multa ($)</th>
+                  <th>Días en mora</th>
+                  <th>Libros</th>
+                  <th>Acción</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </section>
+
+      </main>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
