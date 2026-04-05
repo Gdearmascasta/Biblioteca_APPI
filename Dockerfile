@@ -1,5 +1,5 @@
 # Etapa 1: Build del frontend
-FROM node:18-alpine AS frontend-build
+FROM node:20-alpine AS frontend-build
 WORKDIR /app/frontend
 
 # Copiar archivos de dependencias e instalarlas
