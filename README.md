@@ -76,17 +76,3 @@ Actualmente, el proyecto funciona directamente de forma estática y en memoria p
 
 ---
 
-## ⚠️ Posibles errores y soluciones básicas
-
-- **Error: `FileNotFoundError: [Errno 2] No such file or directory: '.../BD_libros.xlsx'`**
-  - **Solución:** Asegúrate de que dejaste el archivo `BD_libros.xlsx` justo en la **raíz** de la carpeta general e intacto.
-  
-- **Fallo al levantar uvicorn localmente diciendo que falta una librería (no module named pandas)**
-  - **Solución:** Reinstala activando el entorno virtual si tienes uno, o valida estar en el path correcto: pip install -r backend/requirements.txt.
-  
-- **Vercel arroja `404 Not Found` al interactuar con el backend en producción pero el front carga**
-  - **Solución:** Verifica que dentro de la cuenta de Vercel todos los archivos han subido y tu `vercel.json` dice: `"src": "/api/(.*)"`. Tu código del front debe solicitar a los path como `/api/libros` cuando corre remoto (este proyecto ya los interrumpe y redirige si el proxy Vite lo tiene, pero es recomendable revisar las peticiones fetch de `frontend` que apunten a rutas relativas `/libros` o `/api/...`), no lo modifiques salvo que sea necesario.
-
-- **Los nuevos libros registrados no se guardan en el Excel (solo dura temporal)**
-  - **Por qué sucede:** El despliegue "Serverless" de Vercel solo provee almacenamiento persistente de **Sólo Lectura** para el archivo Excel, y lo destruye de memoria cuando se reinicia o va a hibernar. 
-  - **Solución a futuro:** Para un sistema verdaderamente persistente productivo, considera migrar el almacenamiento Excel a una base de datos PostgreSQL real como Supabase, integrando las credenciales como Environment Variables. No obstante, para lectura del catálogo base será robusto y estable.
