@@ -5,6 +5,12 @@ from typing import List, Optional
 import datetime
 import pandas as pd
 import os
+import sys
+
+# Agregar el directorio actual al sys.path para que los imports locales funcionen correctamente en entornos como Railway
+base_dir = os.path.dirname(os.path.abspath(__file__))
+if base_dir not in sys.path:
+    sys.path.insert(0, base_dir)
 
 from servicios.biblioteca import Biblioteca
 from modelos.entidades import Libro, Autor, Editorial, Nacionalidad, Usuario
