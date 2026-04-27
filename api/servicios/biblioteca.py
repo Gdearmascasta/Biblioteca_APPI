@@ -34,13 +34,61 @@ class Biblioteca:
     def listar_usuarios(self):
         return self.usuarios_registrados.obtener_todos()
 
-    def realizar_prestamo(self, codigo_usu, codigos_libros, fecha_ent_prop):
+    def actualizar_libro(self, codigo_lib, datos_nuevos):
+        libro = self.buscar_libro(codigo_lib)
+        if not libro:
+            raise ValueError(f"Libro {codigo_lib} no encontrado")
+        
+        if "titulo" in datos_nuevos:
+            libro.nombre_lib = datos_nuevos["titulo"]
+        if "editorial_nombre" in datos_nuevos:
+            libro.editorial.nombre_edi = datos_nuevos["editorial_nombre"]
+        if "autores_nombres" in datos_nuevos:
+            from modelos.entidades import Autor
+            libro.autores = []
+            for n_aut in datos_nuevos["autores_nombres"]:
+                a = Autor(100, n_aut, "", "")
+                libro.agregar_autor(a)
+        return libro
+
+    def actualizar_usuario(self, codigo_usu, datos_nuevos):
+        usuario = self.buscar_usuario(codigo_usu)
+        if not usuario:
+            raise ValueError(f"Usuario {codigo_usu} no encontrado")
+        
+        if "nombre" in datos_nuevos:
+            usuario.nombre_usu = datos_nuevos["nombre"]
+        if "direccion" in datos_nuevos:
+            usuario.direccion_usu = datos_nuevos["direccion"]
+        if "telefono" in datos_nuevos:
+            usuario.telefono_usu = datos_nuevos["telefono"]
+        return usuario
+
+    def actualizar_prestamo(self, numero_pres, datos_nuevos):
+        prestamos = self.historial_prestamos.buscar(lambda p: p.numero_pres == numero_pres)
+        if not prestamos:
+            raise ValueError(f"Préstamo #{numero_pres} no encontrado.")
+        prestamo = prestamos[0]
+        
+        if "dias_en_mora" in datos_nuevos:
+            prestamo.dias_en_mora = datos_nuevos["dias_en_mora"]
+            prestamo.valor_multa = prestamo.dias_en_mora * 5000
+        return prestamo
+
+    def realizar_prestamo(self, codigo_usu, codigos_libros, fecha_pres_str=None):
         usuario = self.buscar_usuario(codigo_usu)
         if not usuario:
             raise ValueError(f"Usuario {codigo_usu} no encontrado")
 
-        nuevo_prestamo = Prestamo(self.contador_prestamos, codigo_usu, fecha_ent_prop)
+        nuevo_prestamo = Prestamo(self.contador_prestamos, codigo_usu, 0)
         
+        if fecha_pres_str:
+            from datetime import datetime
+            try:
+                nuevo_prestamo.fecha_pres = datetime.strptime(fecha_pres_str, "%Y-%m-%d")
+            except ValueError:
+                pass
+                
         libros_agregados = 0
         for cod in codigos_libros:
             libro = self.buscar_libro(cod)

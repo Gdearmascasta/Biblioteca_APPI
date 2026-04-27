@@ -1,0 +1,10 @@
+# Entorno virtual
+env/
+api/env/
+
+# Python
+__pycache__/
+*.pyc
+
+# Variables de entorno
+.env

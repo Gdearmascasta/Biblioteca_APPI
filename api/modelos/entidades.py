@@ -73,21 +73,13 @@ class Usuario:
         }
 
 class Prestamo:
-    def __init__(self, numero_pres, codigo_usu, fecha_ent_prop):
+    def __init__(self, numero_pres, codigo_usu, dias_en_mora=0):
         self.numero_pres = numero_pres
         self.codigo_usu = codigo_usu                
         self.fecha_pres = datetime.now()
-        # Ensure fecha_ent_prop is datetime
-        if isinstance(fecha_ent_prop, str):
-            try:
-                self.fecha_ent_prop = datetime.fromisoformat(fecha_ent_prop)
-            except:
-                self.fecha_ent_prop = datetime.strptime(fecha_ent_prop, "%Y-%m-%d")
-        else:
-            self.fecha_ent_prop = fecha_ent_prop
-            
+        self.dias_en_mora = dias_en_mora
         self.fecha_ent_real = None                  
-        self.valor_multa = 0.0
+        self.valor_multa = self.dias_en_mora * 5000
         self.libros = []                            
 
     def agregar_libro(self, libro):
@@ -98,18 +90,22 @@ class Prestamo:
             self.fecha_ent_real = datetime.now()
         else:
             self.fecha_ent_real = fecha_ent_real
-            
-        if self.fecha_ent_real > self.fecha_ent_prop:
-            dias_retraso = (self.fecha_ent_real - self.fecha_ent_prop).days
-            if dias_retraso > 0:
-                self.valor_multa = dias_retraso * 5000  
 
     def to_dict(self):
+        # Calcular mora dinámicamente si fecha_pres ahora es la fecha máxima (vencimiento)
+        if self.fecha_ent_real:
+            diff = (self.fecha_ent_real - self.fecha_pres).days
+        else:
+            diff = (datetime.now() - self.fecha_pres).days
+            
+        self.dias_en_mora = diff if diff > 0 else 0
+        self.valor_multa = self.dias_en_mora * 5000
+
         return {
             "numero_pres": self.numero_pres,
             "codigo_usu": self.codigo_usu,
             "fecha_pres": self.fecha_pres.isoformat() if self.fecha_pres else None,
-            "fecha_ent_prop": self.fecha_ent_prop.isoformat() if self.fecha_ent_prop else None,
+            "dias_en_mora": self.dias_en_mora,
             "fecha_ent_real": self.fecha_ent_real.isoformat() if self.fecha_ent_real else None,
             "estado": "DEVUELTO" if self.fecha_ent_real else "ACTIVO",
             "valor_multa": self.valor_multa,

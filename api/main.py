@@ -69,16 +69,29 @@ class LibroCreate(BaseModel):
     editorial_nombre: str
     autores_nombres: List[str]
 
+class LibroUpdate(BaseModel):
+    titulo: Optional[str] = None
+    editorial_nombre: Optional[str] = None
+    autores_nombres: Optional[List[str]] = None
+
 class UsuarioCreate(BaseModel):
     codigo: int
     nombre: str
     direccion: str
     telefono: str
 
+class UsuarioUpdate(BaseModel):
+    nombre: Optional[str] = None
+    direccion: Optional[str] = None
+    telefono: Optional[str] = None
+
 class PrestamoCreate(BaseModel):
     codigo_usuario: int
     codigos_libros: List[int]
-    fecha_entrega: str  # formato YYYY-MM-DD
+    fecha_pres: Optional[str] = None
+
+class PrestamoUpdate(BaseModel):
+    dias_en_mora: Optional[int] = None
 
 # --- Endpoints Libros ---
 @app.get("/api/libros")
@@ -95,6 +108,14 @@ def crear_libro(req: LibroCreate):
         lib.agregar_autor(a)
     biblio.registrar_libro(lib)
     return {"mensaje": "Libro registrado", "libro": lib.to_dict()}
+
+@app.put("/api/libros/{codigo}")
+def actualizar_libro(codigo: int, req: LibroUpdate):
+    try:
+        lib = biblio.actualizar_libro(codigo, req.model_dump(exclude_unset=True))
+        return {"mensaje": "Libro actualizado", "libro": lib.to_dict()}
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
 
 @app.get("/api/buscar")
 def buscar_libro(codigo: int):
@@ -115,6 +136,14 @@ def crear_usuario(req: UsuarioCreate):
     biblio.registrar_usuario(u)
     return {"mensaje": "Usuario registrado", "usuario": u.to_dict()}
 
+@app.put("/api/usuarios/{codigo}")
+def actualizar_usuario(codigo: int, req: UsuarioUpdate):
+    try:
+        u = biblio.actualizar_usuario(codigo, req.model_dump(exclude_unset=True))
+        return {"mensaje": "Usuario actualizado", "usuario": u.to_dict()}
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+
 # --- Endpoints Préstamos ---
 @app.get("/api/prestamos")
 def get_prestamos():
@@ -124,10 +153,18 @@ def get_prestamos():
 @app.post("/api/prestamos")
 def crear_prestamo(req: PrestamoCreate):
     try:
-        p = biblio.realizar_prestamo(req.codigo_usuario, req.codigos_libros, req.fecha_entrega)
+        p = biblio.realizar_prestamo(req.codigo_usuario, req.codigos_libros, req.fecha_pres)
         return {"mensaje": "Préstamo registrado", "prestamo": p.to_dict()}
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
+
+@app.put("/api/prestamos/{numero_pres}")
+def actualizar_prestamo(numero_pres: int, req: PrestamoUpdate):
+    try:
+        p = biblio.actualizar_prestamo(numero_pres, req.model_dump(exclude_unset=True))
+        return {"mensaje": "Préstamo actualizado", "prestamo": p.to_dict()}
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
 
 @app.post("/api/prestamos/devolver/{numero_pres}")
 def devolver_prestamo(numero_pres: int):
