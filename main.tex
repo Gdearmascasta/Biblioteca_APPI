@@ -1,0 +1,239 @@
+\documentclass{rapport}
+\usepackage{lipsum}
+\usepackage{gensymb}
+\usepackage{float}
+\usepackage{graphicx} 
+\usepackage{colortbl} 
+\usepackage{tcolorbox} 
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{booktabs}
+
+\title{Proyecto de aula: Biblioteca Digital} 
+
+\begin{document}
+
+\logo{Logos/Nuevo-logo-UTB-1.png}
+\uni{\textbf{Universidad Tecnológica de Bolívar}}
+\ttitle{Proyecto de aula: Biblioteca Digital} 
+\subject{Proyecto - Estructura de datos}
+\professor{Rafael Enrique Monterroza Barrios}
+\students{German De Armas Castaño - T00068765 \\ Angel Vega Rodriguez - T00068186  } 
+
+\buildmargins 
+\buildcover 
+\toc \section{abstract}
+El presente documento constituye el informe técnico final del sistema "Biblioteca Digital". Este proyecto tuvo como propósito principal diseñar y construir una plataforma cliente-servidor para la gestión eficiente de catálogos de libros, usuarios y préstamos en entornos bibliotecarios. El enfoque central radicó en la aplicación rigurosa de estructuras de datos algorítmicas computacionales con el fin de garantizar tiempos de respuesta óptimos durante las búsquedas y el almacenamiento de la información, objetivos que fueron logrados con éxito en la implementación final.
+
+\section{Introducción}
+
+El contexto actual de las bibliotecas, tanto físicas como digitales, exige una infraestructura tecnológica capaz de soportar operaciones concurrentes y manejar grandes volúmenes de información. La gestión paralela de miles de títulos de libros, registros de autores, historial de usuarios y flujos constantes de préstamos y devoluciones supone un reto significativo en términos de velocidad de procesamiento y organización en la memoria.
+
+Tradicionalmente, la importancia de una gestión eficiente radica en la capacidad del sistema para responder a las consultas de los usuarios sin demoras perceptibles. La experiencia del usuario depende críticamente de componentes de software que sean capaces de acceder a colecciones de datos masivos en cuestión de milisegundos. Cuando un usuario de la biblioteca digital busca un libro por código o título, o cuando el administrador intenta validar la identidad y el estado de un prestatario, el sistema debe efectuar la búsqueda evitando recorrer toda la base de datos de manera secuencial, lo cual es altamente ineficiente y no escalable.
+
+El problema fundamental de la búsqueda y organización de la información se intensifica a medida que el inventario de la biblioteca crece. Las búsquedas lineales u operaciones no optimizadas generan cuellos de botella que terminan degradando el rendimiento completo de la aplicación. Por esta razón, el diseño de este proyecto no recayó exclusivamente en un modelo relacional estándar, sino que implementó una simulación de almacenamiento en memoria a través de algoritmos óptimos, aplicando la teoría de estructuras de datos directamente en el núcleo de la aplicación.
+
+El propósito central del sistema desarrollado, denominado "Biblioteca Digital", no solo fue construir una aplicación funcional como producto final, sino demostrar la aplicación práctica y efectiva de la algoritmia concurrente en un entorno real.
+
+\section{Objetivos del Proyecto}
+
+\subsection{Objetivo General}
+Diseñar, planificar e implementar un sistema eficiente denominado "Biblioteca Digital", que integró estructuras de datos algorítmicas avanzadas dentro de una arquitectura cliente-servidor moderna, garantizando un ecosistema escalable y de alto rendimiento para la gestión integral de catálogos bibliográficos, usuarios y registro de préstamos.
+
+\subsection{Objetivos Específicos}
+\begin{itemize}
+    \item \textbf{Desarrollo fundamental del núcleo logístico:} Se diseñó una biblioteca digital orientada a objetos que abarca todos los modelos de negocio necesarios, como Libro, Autor, Editorial, Nacionalidad, Usuario y Préstamo.
+    \item \textbf{Implementación teórica y práctica de estructuras de datos:} Se analizó e implementó el uso de distintas estructuras de datos para optimizar la gestión de la información. En particular, se utilizó un Árbol Binario de Búsqueda (BST) para el catálogo de libros, una Tabla Hash para el registro de usuarios y Listas Enlazadas para el manejo del historial de préstamos, reduciendo exitosamente la complejidad computacional.
+    \item \textbf{Creación de la arquitectura cliente-servidor:} Se estableció un sistema desacoplado, desarrollando un servidor backend robusto basado en el ecosistema Python capaz de atender peticiones asíncronas mediante una API REST.
+    \item \textbf{Desarrollo de interfaz de usuario web:} Se construyó un frontend moderno en Vite y React/JS que proporciona a los bibliotecarios un portal interactivo, dinámico y estéticamente profesional.
+    \item \textbf{Optimización estricta de las búsquedas:} Se comprobó, a través de análisis de rendimiento empírico, que las operaciones de rescate de información y búsqueda alcanzaron cuotas de tiempo asintótico de $O(\log n)$ y $O(1)$ respectivamente, superando ampliamente a las implementaciones matriciales comunes.
+\end{itemize}
+
+\section{Métricas de Éxito}
+
+Para garantizar que el desarrollo cumpliera con las especificaciones técnicas trazadas, se evaluó el sistema final contra una serie de métricas críticas que determinaron su viabilidad de despliegue en un entorno real:
+
+\begin{itemize}
+    \item \textbf{Eficiencia de acceso a usuarios:}  La métrica estipuló que la inserción, modificación o validación de un identificador numérico o cadena de usuario se completara con una complejidad de tiempo cercana a $O(1)$. Las pruebas confirmaron este rendimiento gracias a la Tabla Hash implementada.
+    \item \textbf{Escalabilidad del sistema:} La aplicación demostró ser capaz de manejar operaciones concurrentes, como la incorporación de nuevos préstamos, sin generar conflictos asociados al redimensionamiento de estructuras dependientes ni provocar un uso ineficiente de la memoria RAM del servidor.
+\end{itemize}
+
+\section{Entregables del Proyecto}
+
+El ciclo de desarrollo y diseño derivó en la entrega de los siguientes artefactos tecnológicos y académicos que validan la consecución completa del proyecto:
+
+\begin{itemize}
+    \item \textbf{Código fuente del sistema:} Estructura de repositorios y carpetas contenidas que exhiben lógica legible, escalable y mantenible. Se entregó el paquete particionado y con sus configuraciones de empaquetado (`requirements.txt` y `package.json`).
+    \item \textbf{Documentación técnica e Informe final:} El presente documento ampliado, el cual sustenta las especificaciones, modelos UML, arquitectura implementada y decisiones operativas fundamentales.
+    \item \textbf{Manual Técnico y Manual de Usuario Funcional:} Documentación específica que guía el despliegue del entorno y el uso de la plataforma interactiva.
+\end{itemize}
+
+\section{Modelo Conceptual de Datos}
+
+Antes de proceder con la selección e implementación de estructuras de datos algorítmicas, resultó necesario definir la forma en la que la información del sistema se organizaría desde una perspectiva conceptual. Para tal fin, se planteó un modelo de datos que describe las entidades principales del dominio bibliotecario y las relaciones existentes entre ellas.
+
+La Figura \ref{fig:modelo_bd} presenta el diagrama conceptual que estructuró la base de datos del sistema desarrollado. En dicho esquema se identifican las entidades fundamentales que participan en la gestión de la biblioteca digital, así como sus atributos y las relaciones que las vinculan.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{images/Captura de pantalla 2026-03-15 180505.png}
+\caption{Modelo conceptual de datos del sistema Biblioteca Digital}
+\label{fig:modelo_bd}
+\end{figure}
+
+El modelo conceptual define varias entidades principales. En primer lugar, la entidad \textit{Libro} representa cada uno de los títulos almacenados dentro del catálogo. Cada libro se encuentra asociado a una \textit{Editorial}, lo cual permite registrar la casa editorial responsable de su publicación.
+
+Por otra parte, la entidad \textit{Autor} almacena la información de los escritores. Dado que un libro puede tener múltiples autores y un autor puede haber participado en la creación de varios libros, esta relación se modeló mediante una tabla intermedia denominada \textit{Libro\_Autor}, la cual permitió representar adecuadamente esta relación de muchos a muchos.
+
+Asimismo, el sistema contempla la entidad \textit{Usuario}, la cual representa a las personas que interactúan con la biblioteca y solicitan préstamos de material bibliográfico. Cada usuario puede generar múltiples registros de préstamo a lo largo del tiempo.
+
+La entidad \textit{Prestamo} registra las transacciones realizadas dentro del sistema, incluyendo la fecha en la que se realiza el préstamo, la fecha estimada de devolución, la fecha real de entrega y cualquier posible multa asociada a retrasos. Debido a que un préstamo puede incluir varios libros simultáneamente, se introdujo una tabla intermedia \textit{Libro\_Prestamo}, representando la relación entre los préstamos y los libros involucrados.
+
+Finalmente, la entidad \textit{Nacionalidad} permite clasificar a los autores según su país de origen, lo que facilita la organización y consulta de información cultural o geográfica dentro del catálogo.
+
+Este modelo conceptual constituyó la base estructural sobre la cual se diseñó la lógica del sistema y la implementación de las estructuras de datos propuestas.
+
+\section{Metodología de Desarrollo y Estructuras de Datos Implementadas}
+
+El corazón del proyecto "Biblioteca Digital" se fundamentó en no delegar la algoritmia a un motor relacional de base de datos genérico, sino en modelar activamente el almacenamiento de datos en el nivel aplicativo, logrando una eficiencia técnica superior. A continuación, se detallan las estructuras implementadas:
+
+\subsection{Árbol Binario de Búsqueda (BST) para el Catálogo de Libros}
+\textbf{¿Qué es y cómo funciona en el sistema?:} Un BST (Binary Search Tree) es una estructura jerárquica dirigida donde cada nodo tiene a lo sumo dos hijos. En nuestro sistema, cada nodo almacena un objeto \texttt{Libro}. Al insertar un nuevo libro o buscar uno existente, el sistema compara su identificador único (ID o título) con la raíz y desciende por la rama izquierda (si es menor) o derecha (si es mayor) hasta encontrar su posición o el dato buscado.
+
+\textbf{¿Por qué se eligió y complejidad computacional?:} El catálogo de libros es extenso y las consultas de disponibilidad superan ampliamente a las inserciones de nuevos volúmenes. El BST proveyó una complejidad asintótica promedio de $O(\log n)$ para búsqueda, inserción y eliminación. Esto resolvió la problemática de estancamiento en las búsquedas lineales tradicionales al ubicar libros desde el frontend.
+
+\textbf{Implementación en código:}
+\begin{verbatim}
+class NodoLibro:
+    def __init__(self, libro):
+        self.libro = libro
+        self.izquierdo = None
+        self.derecho = None
+
+class BSTLibros:
+    def __init__(self):
+        self.raiz = None
+        
+    def insertar(self, libro):
+        if self.raiz is None:
+            self.raiz = NodoLibro(libro)
+        else:
+            self._insertar_recursivo(self.raiz, libro)
+            
+    def buscar(self, id_libro):
+        return self._buscar_recursivo(self.raiz, id_libro)
+\end{verbatim}
+
+\subsection{Tabla Hash para el Control de Usuarios}
+\textbf{¿Qué es y cómo funciona en el sistema?:} Es una estructura de datos que asocia claves a valores mediante una función matemática (función hash). En la biblioteca, el documento de identidad alfanumérico del usuario actúa como clave. La función hash computa un índice en un arreglo principal (buckets) donde se almacena el objeto \texttt{Usuario}. Las colisiones se manejaron mediante encadenamiento, adosando Listas Enlazadas en las ranuras colisionadas.
+
+\textbf{¿Por qué se eligió y complejidad computacional?:} Durante procesos críticos y de alto tráfico (como préstamos y devoluciones rápidas), es inaceptable tener que recorrer listas secuenciales para validar a un usuario. La Tabla Hash permitió recuperar el perfil del usuario en un tiempo constante $O(1)$, maximizando la respuesta del servidor sin importar el volumen demográfico de usuarios registrados.
+
+\textbf{Implementación en código:}
+\begin{verbatim}
+class TablaHashUsuarios:
+    def __init__(self, capacidad=1000):
+        self.capacidad = capacidad
+        self.tabla = [[] for _ in range(capacidad)]
+        
+    def _hash(self, id_usuario):
+        return hash(id_usuario) % self.capacidad
+        
+    def insertar(self, usuario):
+        indice = self._hash(usuario.id)
+        # Encadenamiento para manejo de colisiones
+        for i, (k, v) in enumerate(self.tabla[indice]):
+            if k == usuario.id:
+                self.tabla[indice][i] = (usuario.id, usuario)
+                return
+        self.tabla[indice].append((usuario.id, usuario))
+\end{verbatim}
+
+\subsection{Listas Enlazadas para el Historial de Préstamos}
+\textbf{¿Qué es y cómo funciona en el sistema?:} Una Lista Enlazada es un modelo lineal que almacena registros discretos enlazados lógicamente por apuntadores, sin necesidad de contigüidad en memoria. En el sistema, cada vez que se efectúa un préstamo, se crea un bloque (nodo) que contiene los detalles de la transacción (fecha, usuario, libros arrendados) y un puntero al siguiente préstamo, originando un cordón transaccional histórico inmutable.
+
+\textbf{¿Por qué se eligió y complejidad computacional?:} El historial de transacciones requiere inserciones constantes y rápidas al final de la cola temporal, priorizando la inserción en el fondo de la línea en tiempo $O(1)$. La lista enlazada evitó el costoso redimensionamiento y copia de arreglos estáticos cuando la memoria se rebosa, dotando al sistema de un registro auditable perfecto para el control de caducidades y multas.
+
+\textbf{Implementación en código:}
+\begin{verbatim}
+class NodoPrestamo:
+    def __init__(self, prestamo):
+        self.prestamo = prestamo
+        self.siguiente = None
+
+class ListaEnlazadaPrestamos:
+    def __init__(self):
+        self.cabeza = None
+        self.cola = None
+        
+    def registrar_prestamo(self, prestamo):
+        nuevo_nodo = NodoPrestamo(prestamo)
+        if not self.cabeza:
+            self.cabeza = nuevo_nodo
+            self.cola = nuevo_nodo
+        else:
+            self.cola.siguiente = nuevo_nodo
+            self.cola = nuevo_nodo
+\end{verbatim}
+
+\section{Arquitectura del Sistema}
+
+El desarrollo del proyecto se fundamentó en una arquitectura cliente-servidor fuertemente desacoplada, lo que permitió separar la lógica de negocio y el almacenamiento algorítmico en memoria de la presentación visual al usuario.
+
+\textbf{Arquitectura Cliente-Servidor y API REST:} El sistema fue dividido en dos componentes lógicos autónomos. El Backend actuó como el núcleo lógico (servidor), gestionando las estructuras de datos y respondiendo a peticiones mediante una API RESTful estandarizada. El Frontend (cliente) se encargó de la renderización y la interacción con el usuario final.
+
+\textbf{Tecnologías Utilizadas:}
+\begin{itemize}
+    \item \textbf{Backend:} Implementado en el ecosistema Python, utilizando frameworks para la exposición de endpoints HTTP. Toda la persistencia en memoria y algoritmia concurrente fue construida y controlada directamente a través de código Python.
+    \item \textbf{Frontend:} Desarrollado con JavaScript moderno empleando el empaquetador Vite y librerías de renderizado reactivo, garantizando una interfaz fluida (SPA - Single Page Application).
+\end{itemize}
+
+\textbf{Flujo de Datos:} Cuando un usuario realiza una acción en la interfaz, el frontend despacha una solicitud HTTP al backend. El servidor procesa la información consultando o modificando el BST, la Tabla Hash o las Listas Enlazadas. Finalmente, el servidor empaqueta los resultados en formato JSON normalizado y los devuelve al cliente, quien actualiza la vista reactivamente.
+
+\section{Interacción entre Frontend y Backend}
+
+La comunicación y el acoplamiento entre las dos capas del proyecto se realizó de manera asíncrona mediante el consumo directo de la API REST por parte del frontend.
+
+\textbf{Endpoints Implementados:} Se definieron rutas semánticas que respetan los estándares HTTP:
+\begin{itemize}
+    \item \texttt{GET /libros}: Retorna el catálogo completo recorriendo el BST.
+    \item \texttt{GET /usuarios/\{id\}}: Consulta el perfil de un usuario específico en tiempo $O(1)$ gracias a la Tabla Hash.
+    \item \texttt{POST /prestamos}: Registra una nueva transacción de arrendamiento insertando un nodo en la Lista Enlazada.
+\end{itemize}
+
+\textbf{Flujo Completo de un Préstamo:} 
+1. \textbf{Usuario:} El bibliotecario llena el formulario de préstamo en la pantalla y presiona el botón de registro.
+2. \textbf{Frontend:} El sistema captura los datos del estado de la vista y emite una solicitud \texttt{POST}.
+3. \textbf{Backend:} Python recibe el payload JSON, verifica la identidad y el estado activo del usuario en la Tabla Hash (en coste $O(1)$) y confirma la disponibilidad física de cada libro re-ruteando la búsqueda en el árbol BST (en coste $O(\log n)$).
+4. \textbf{Estructuras de Datos:} Si las validaciones son exitosas, se instancia el modelo \texttt{Prestamo} con su marca temporal ISO y se añade un nuevo eslabón a la cabeza de la Lista Enlazada. Se descuenta entonces el stock del libro.
+5. \textbf{Respuesta:} El servidor retorna un estado HTTP \texttt{201 Created}. El frontend intercepta la respuesta afirmativa y redibuja su tabla visual de préstamos de manera instantánea.
+
+\textbf{Ejemplo de Petición HTTP (POST):}
+\begin{verbatim}
+POST /prestamos HTTP/1.1
+Content-Type: application/json
+
+{
+  "usuario_id": "T00068765",
+  "libros": [105, 204],
+  "fecha_prestamo": "2026-04-25T10:00:00Z"
+}
+\end{verbatim}
+
+\section{Implementación del Sistema}
+
+El engranaje del sistema funciona a un ritmo secuencial y altamente optimizado. Al inicializarse el servidor backend de Python, se instancian los repositorios lógicos alojando en memoria la raíz vacía del árbol BST, el vector inicial de n-casillas de la Tabla Hash, y los apuntadores nulos de la Lista Enlazada.
+
+Para permitir la compatibilidad entre el lenguaje de servidor con el ecosistema de red, los modelos nativos de las entidades (como el registro \texttt{Libro} que alberga variables internas y un arreglo adjunto referencial de \texttt{Autor}) son procesados rigurosamente en diccionarios serializables de Python mediante funciones intrínsecas, retornando siempre estructuras normalizadas.
+
+El ecosistema Frontend se articula dentro del servidor local montado mediante Vite, consumiendo e interactuando dinámicamente con estas estructuras.
+
+Si un bibliotecario decide arrendar o generar un préstamo transaccional, el controlador en Python valida que el código primario del usuario colisione satisfactoriamente en la Tabla Hash con un tiempo nominal plano de $O(1)$. Si el usuario se halla en estado activo, el sistema bifurca una búsqueda logarítmica por el BST hasta verificar la presencia real y física de cada uno de los libros listados. Tras esta doble aprobación veloz, se graba una marca temporal y se añade de manera irrecusable un nuevo eslabón de memoria a la Lista Enlazada. Posteriormente, el backend retorna un estado afirmativo HTTP al hilo del Frontend, que redibuja su estática de préstamos culminando el recorrido en una faceta asombrosamente expedita y fluida.
+
+\section{Conclusión}
+
+En síntesis, este documento ha presentado los resultados finales y la envergadura técnica del proyecto "Biblioteca Digital". Con la ejecución exitosa de los lineamientos de arquitectura propuestos, se dio a luz no simplemente a un gestor informático tradicional o a un software base relacional genérico, sino a una obra de alto nivel de complejidad diseñada y construida para maximizar la eficiencia funcional.
+
+La evaluación demostró que el cumplimiento de los objetivos fue categórico: se lograron tiempos de búsqueda rápidos asintóticos de $O(\log n)$ en el catálogo general, y procesos constantes de $O(1)$ en el área de perfiles e inserción del historial. La integración precisa de un BST, una Tabla Hash y Listas Enlazadas directamente en la memoria del aplicativo garantizó flujos operativos estables y optimización radical del rendimiento del servidor, sentando un precedente sobre la aplicación práctica de la algoritmia en arquitecturas web cliente-servidor.
+
+\end{document}

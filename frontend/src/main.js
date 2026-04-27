@@ -63,6 +63,7 @@ function renderLibros(libros) {
       <td><strong>${lib.nombre_lib}</strong></td>
       <td>${lib.editorial?.nombre_edi || 'N/A'}</td>
       <td>${autores || 'N/A'}</td>
+      <td><button class="accion-btn" onclick="abrirModalEdicionLibro(${lib.codigo_lib}, '${lib.nombre_lib.replace(/'/g, "\\'")}', '${(lib.editorial?.nombre_edi || '').replace(/'/g, "\\'")}', '${autores.replace(/'/g, "\\'")}')">Editar</button></td>
     `;
     tablaLibros.appendChild(tr);
   });
@@ -126,6 +127,7 @@ async function cargarUsuarios() {
         <td><strong>${usu.nombre_usu}</strong></td>
         <td>${usu.direccion_usu}</td>
         <td>${usu.telefono_usu}</td>
+        <td><button class="accion-btn" onclick="abrirModalEdicionUsuario(${usu.codigo_usu}, '${usu.nombre_usu.replace(/'/g, "\\'")}', '${usu.direccion_usu.replace(/'/g, "\\'")}', '${usu.telefono_usu.replace(/'/g, "\\'")}')">Editar</button></td>
       `;
       tablaUsuarios.appendChild(tr);
     });
@@ -167,21 +169,13 @@ async function cargarPrestamos() {
     data.prestamos.forEach(p => {
       const tr = document.createElement('tr');
       const f1 = new Date(p.fecha_pres).toLocaleDateString();
-      const f2 = p.fecha_ent_prop ? p.fecha_ent_prop.split('T')[0] : 'N/A';
       const f3 = p.fecha_ent_real ? new Date(p.fecha_ent_real).toLocaleDateString() : '-';
 
       const isActivo = p.estado === 'ACTIVO';
       const estadoClase = isActivo ? 'estado-activo' : 'estado-devuelto';
 
-      // Calcular días en mora
-      let diasMora = 0;
-      if (p.fecha_ent_prop) {
-        const fechaProp = new Date(p.fecha_ent_prop.split('T')[0]);
-        const fechaFin = isActivo ? new Date() : new Date(p.fecha_ent_real);
-        const diffTime = fechaFin - fechaProp;
-        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-        diasMora = diffDays > 0 ? diffDays : 0;
-      }
+      // Días en mora viene del backend
+      let diasMora = p.dias_en_mora || 0;
 
       const librosText = p.libros.map(l => l.nombre_lib).join(' | ');
 
@@ -189,14 +183,14 @@ async function cargarPrestamos() {
         <td>#${p.numero_pres}</td>
         <td>Usu ${p.codigo_usu}</td>
         <td>${f1}</td>
-        <td>${f2}</td>
         <td>${f3}</td>
         <td class="${estadoClase}">${p.estado}</td>
         <td>$${p.valor_multa}</td>
         <td>${diasMora}</td>
         <td style="font-size: 0.8rem">${librosText}</td>
         <td>
-          ${isActivo ? `<button class="accion-btn" onclick="devolver(${p.numero_pres})">Devolver</button>` : '✔️'}
+          ${isActivo ? `<button class="accion-btn btn-devolver" onclick="devolver(${p.numero_pres})">Devolver</button>` : '✔️'}
+          <button class="accion-btn" onclick="abrirModalEdicionPrestamo(${p.numero_pres}, ${diasMora})">Editar</button>
         </td>
       `;
       tablaPrestamos.appendChild(tr);
@@ -215,7 +209,7 @@ document.getElementById('form-prestamo').addEventListener('submit', async (e) =>
   const pres = {
     codigo_usuario: parseInt(document.getElementById('pres-usu').value),
     codigos_libros: arr,
-    fecha_entrega: document.getElementById('pres-fecha').value
+    fecha_pres: document.getElementById('pres-fecha').value
   };
 
   try {
@@ -245,3 +239,97 @@ window.devolver = async function (id) {
     alert('Error al devolver: ' + error.message);
   }
 }
+
+// ========================
+// ✏️ LÓGICA DE EDICIÓN
+// ========================
+
+window.cerrarModal = function(id) {
+  document.getElementById(id).classList.add('hidden');
+}
+
+window.abrirModalEdicionLibro = function(cod, tit, edi, aut) {
+  document.getElementById('edit-lib-cod').value = cod;
+  document.getElementById('edit-lib-tit').value = tit;
+  document.getElementById('edit-lib-edi').value = edi;
+  document.getElementById('edit-lib-aut').value = aut;
+  document.getElementById('modal-editar-libro').classList.remove('hidden');
+}
+
+document.getElementById('form-edit-libro').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const cod = document.getElementById('edit-lib-cod').value;
+  const libroData = {
+    titulo: document.getElementById('edit-lib-tit').value,
+    editorial_nombre: document.getElementById('edit-lib-edi').value,
+    autores_nombres: document.getElementById('edit-lib-aut').value.split(',').map(a => a.trim())
+  };
+  try {
+    const res = await fetch(`${API_URL}/libros/${cod}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(libroData)
+    });
+    if (!res.ok) throw new Error();
+    cerrarModal('modal-editar-libro');
+    cargarLibros();
+  } catch (err) {
+    alert('Error al editar libro');
+  }
+});
+
+window.abrirModalEdicionUsuario = function(cod, nom, dir, tel) {
+  document.getElementById('edit-usu-cod').value = cod;
+  document.getElementById('edit-usu-nom').value = nom;
+  document.getElementById('edit-usu-dir').value = dir;
+  document.getElementById('edit-usu-tel').value = tel;
+  document.getElementById('modal-editar-usuario').classList.remove('hidden');
+}
+
+document.getElementById('form-edit-usuario').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const cod = document.getElementById('edit-usu-cod').value;
+  const usuData = {
+    nombre: document.getElementById('edit-usu-nom').value,
+    direccion: document.getElementById('edit-usu-dir').value,
+    telefono: document.getElementById('edit-usu-tel').value
+  };
+  try {
+    const res = await fetch(`${API_URL}/usuarios/${cod}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(usuData)
+    });
+    if (!res.ok) throw new Error();
+    cerrarModal('modal-editar-usuario');
+    cargarUsuarios();
+  } catch (err) {
+    alert('Error al editar usuario');
+  }
+});
+
+window.abrirModalEdicionPrestamo = function(num, mora) {
+  document.getElementById('edit-pres-num').value = num;
+  document.getElementById('edit-pres-mora').value = mora;
+  document.getElementById('modal-editar-prestamo').classList.remove('hidden');
+}
+
+document.getElementById('form-edit-prestamo').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const num = document.getElementById('edit-pres-num').value;
+  const presData = {
+    dias_en_mora: parseInt(document.getElementById('edit-pres-mora').value)
+  };
+  try {
+    const res = await fetch(`${API_URL}/prestamos/${num}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(presData)
+    });
+    if (!res.ok) throw new Error();
+    cerrarModal('modal-editar-prestamo');
+    cargarPrestamos();
+  } catch (err) {
+    alert('Error al editar préstamo');
+  }
+});

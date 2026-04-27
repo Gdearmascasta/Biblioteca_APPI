@@ -25,9 +25,6 @@ COPY api/ ./api/
 # Copiar el build del frontend construido en la etapa 1
 COPY --from=frontend-build /app/frontend/dist ./frontend/dist
 
-# Agregar api al PYTHONPATH para que los imports locales funcionen
-ENV PYTHONPATH=/app/api
-
 # Exponer el puerto
 EXPOSE 8000
 

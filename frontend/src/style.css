@@ -176,5 +176,49 @@ tr:hover {
   background: #dc2626;
 }
 
+.btn-devolver {
+  background: var(--secondary);
+}
+.btn-devolver:hover {
+  background: var(--secondary-hover);
+}
+
 .estado-activo { color: #f59e0b; font-weight: bold; }
 .estado-devuelto { color: #10b981; font-weight: bold; }
+
+/* Modales */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal.hidden {
+  display: none;
+}
+
+.modal-content {
+  width: 100%;
+  max-width: 500px;
+  padding: 2rem;
+  border-radius: 1rem;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 1rem;
+  grid-column: 1 / -1;
+  margin-top: 1rem;
+}
+
+.modal-actions button {
+  flex: 1;
+}
